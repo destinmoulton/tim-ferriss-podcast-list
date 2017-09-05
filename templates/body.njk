@@ -1,11 +1,28 @@
-{% include "header.njk" %}
+{% include "./header.njk" %}
 
-<ul>
+<div class="panel">
+    <h3>A List of Tim Ferriss Podcasts</h3>
+    <p>This content was gathered from the RSS feed for <a href="https://tim.blog/podcast/">Tim Ferriss' Podcasts</a>.</p>
+</div>
+<div>
 {% for item in items %}
-    <li>
-        {{ item.title }}
-    </li>
+<div class="row">
+    <div class="col-sm-12">
+        <div>
+            {% if (item.episodeNumber > 0) %}
+                {{ item.episodeNumber }}.
+            {% endif %}
+            <a href="{{ item.enclosures[0].url }}" download="{{ item.episodeNumber }} {{ item.title }}.mp3">
+                <i class="glyphicon glyphicon-save"></i>
+            </a>
+            <a href="javascript:void(0)" 
+               onclick="showInfoModal({{ loop.index }})"
+               id="tfl-item-title-{{ loop.index }}">{{ item.title }}</a>
+            <div style="display:none;" id="tfl-item-description-{{ loop.index }}">{{ item.description | safe }}</div>
+        </div>
+    </div>
+</div>
 {% endfor %}
-</ul>
-
-{% include "footer.njk" %}
+</div>
+{% include "./modal.njk" %}
+{% include "./footer.njk" %}

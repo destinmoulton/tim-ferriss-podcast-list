@@ -1,0 +1,27 @@
+<div class="modal fade" tabindex="-1" role="dialog" id="tfl-modal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="tfl-modal-title"></h4>
+      </div>
+      <div class="modal-body" id="tfl-modal-body">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<script>
+function showInfoModal(episodeIndex){
+    var title = $("#tfl-item-title-" + episodeIndex).html();
+    var description = $("#tfl-item-description-" + episodeIndex).html();
+    
+    $("#tfl-modal-title").html(title);
+    $("#tfl-modal-body").html(description);
+
+    $("#tfl-modal").modal("show");
+}
+</script>

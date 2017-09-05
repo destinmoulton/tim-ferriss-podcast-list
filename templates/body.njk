@@ -1,0 +1,11 @@
+{% include "header.njk" %}
+
+<ul>
+{% for item in items %}
+    <li>
+        {{ item.title }}
+    </li>
+{% endfor %}
+</ul>
+
+{% include "footer.njk" %}

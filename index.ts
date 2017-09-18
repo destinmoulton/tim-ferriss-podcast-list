@@ -1,17 +1,36 @@
+import request from "request";
 import fs from "fs";
 
-import feedparser from "feedparser-promised";
+import FeedParser from "feedparser";
 import nunjucks from "nunjucks";
 
 const URL = "http://timferriss.libsyn.com/rss";
 
-feedparser.parse(URL)
-    .then((items)=>{
-        buildHTML(items);
-    })
-    .catch((err)=>{
-        console.error(err);
-    })
+function parseRSS(url: string){
+    const req = request(url);
+    const feedparser = new FeedParser({});
+
+    req.onRequestError((err)=>{
+        done(err);
+    });
+
+    req.onRequestResponse((res)=>{
+        if(res.statusCode !== 200){
+            done(new Error("There was a problem fetching the RSS feed."));
+        } else {
+            buildHTML(items);
+        }
+    });
+}
+
+function done(err: Error){
+    if(err){
+        console.error(err, err.stack);
+    }
+
+    process.exit(1);
+}
+
 
 function buildHTML(items){
     const template = "./templates/body.njk";
@@ -44,7 +63,7 @@ function processItems(origItems){
     return processedItems;
 }
 
-function stripEpisodeNumber(title){
+function stripEpisodeNumber(title: string){
     let episodeNumber = 0;
     
     let episodeTitle = title;

@@ -7,7 +7,6 @@ import * as rssparser from "rss-parser";
 const URL = "http://timferriss.libsyn.com/rss";
 parseRSS(URL);
 
-
 function parseRSS(url: string){
     rssparser.parseURL(url, (err: Error, parsed: any)=>{
         if(err) done(err);

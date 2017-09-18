@@ -5,6 +5,8 @@ import FeedParser from "feedparser";
 import nunjucks from "nunjucks";
 
 const URL = "http://timferriss.libsyn.com/rss";
+parseRSS(URL);
+
 
 function parseRSS(url: string){
     const req = request(url);
@@ -18,8 +20,14 @@ function parseRSS(url: string){
         if(res.statusCode !== 200){
             done(new Error("There was a problem fetching the RSS feed."));
         } else {
-            buildHTML(items);
+            res.pipe(feedparser);
         }
+    });
+
+    feedparser.on("error", done);
+    feedparser.on("end", done);
+    feedparser.on("readable", (data)=>{
+        console.log(data);
     });
 }
 

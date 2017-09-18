@@ -1,19 +1,27 @@
 "use strict";
-exports.__esModule = true;
-var fs = require("fs");
-var feedparser = require("feedparser-promised");
-var nunjucks = require("nunjucks");
-var URL = "http://timferriss.libsyn.com/rss";
-feedparser.parse(URL)
-    .then(function (items) {
-    buildHTML(items);
-})["catch"](function (err) {
-    console.error(err);
-});
+Object.defineProperty(exports, "__esModule", { value: true });
+const fs = require("fs");
+const nunjucks = require("nunjucks");
+const rssparser = require("rss-parser");
+const URL = "http://timferriss.libsyn.com/rss";
+parseRSS(URL);
+function parseRSS(url) {
+    rssparser.parseURL(url, (err, parsed) => {
+        if (err)
+            done(err);
+        buildHTML(parsed.feed.entries);
+    });
+}
+function done(err) {
+    if (err) {
+        console.error(err, err.stack);
+    }
+    process.exit(1);
+}
 function buildHTML(items) {
-    var template = "./templates/body.njk";
-    var html = nunjucks.render(template, { items: processItems(items) });
-    fs.writeFile("index.html", html, function (err) {
+    const template = "./templates/body.njk";
+    const html = nunjucks.render(template, { items: processItems(items) });
+    fs.writeFile("index.html", html, (err) => {
         if (err) {
             return console.error("Unable to create index.html!");
         }
@@ -21,11 +29,11 @@ function buildHTML(items) {
     });
 }
 function processItems(origItems) {
-    var episodeCount = origItems.length;
-    var processedItems = [];
-    origItems.forEach(function (item) {
-        var newItem = Object.assign({}, item);
-        var titleInfo = stripEpisodeNumber(item.title);
+    let episodeCount = origItems.length;
+    let processedItems = [];
+    origItems.forEach((item) => {
+        const newItem = Object.assign({}, item);
+        const titleInfo = stripEpisodeNumber(item.title);
         newItem.title = titleInfo.title;
         newItem.episodeNumber = titleInfo.episodeNumber;
         processedItems.push(newItem);
@@ -34,9 +42,9 @@ function processItems(origItems) {
     return processedItems;
 }
 function stripEpisodeNumber(title) {
-    var episodeNumber = 0;
-    var episodeTitle = title;
-    var colonIndex = title.indexOf(":");
+    let episodeNumber = 0;
+    let episodeTitle = title;
+    let colonIndex = title.indexOf(":");
     if (colonIndex > -1) {
         episodeTitle = title.substring(colonIndex + 2);
     }
@@ -57,3 +65,4 @@ function stripEpisodeNumber(title) {
     }
     return { title: episodeTitle, episodeNumber: episodeNumber };
 }
+//# sourceMappingURL=index.js.map

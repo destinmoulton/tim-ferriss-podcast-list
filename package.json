@@ -9,10 +9,9 @@
   "author": "Destin Moulton",
   "license": "MIT",
   "dependencies": {
-    "@types/node-feedparser": "^2.2.1",
+    "@types/node": "^8.0.28",
     "@types/nunjucks": "0.0.33",
-    "feedparser": "^2.2.1",
     "nunjucks": "^3.0.1",
-    "request": "^2.81.0"
+    "rss-parser": "^2.10.6"
   }
 }

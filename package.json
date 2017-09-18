@@ -10,7 +10,7 @@
   "license": "MIT",
   "dependencies": {
     "@types/nunjucks": "0.0.33",
-    "feedparser-promised": "^1.4.2",
+    "feedparser": "^2.2.1",
     "nunjucks": "^3.0.1"
   }
 }

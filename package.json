@@ -9,6 +9,7 @@
   "author": "Destin Moulton",
   "license": "MIT",
   "dependencies": {
+    "@types/nunjucks": "0.0.33",
     "feedparser-promised": "^1.4.2",
     "nunjucks": "^3.0.1"
   }

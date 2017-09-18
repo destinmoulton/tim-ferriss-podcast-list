@@ -1,33 +1,18 @@
-import request from "request";
-import fs from "fs";
 
-import FeedParser from "feedparser";
-import nunjucks from "nunjucks";
+import * as fs from "fs";
+
+import * as nunjucks from "nunjucks";
+import * as rssparser from "rss-parser";
 
 const URL = "http://timferriss.libsyn.com/rss";
 parseRSS(URL);
 
 
 function parseRSS(url: string){
-    const req = request(url);
-    const feedparser = new FeedParser({});
+    rssparser.parseURL(url, (err: Error, parsed: any)=>{
+        if(err) done(err);
 
-    req.onRequestError((err)=>{
-        done(err);
-    });
-
-    req.onRequestResponse((res)=>{
-        if(res.statusCode !== 200){
-            done(new Error("There was a problem fetching the RSS feed."));
-        } else {
-            res.pipe(feedparser);
-        }
-    });
-
-    feedparser.on("error", done);
-    feedparser.on("end", done);
-    feedparser.on("readable", (data)=>{
-        console.log(data);
+        buildHTML(parsed.feed.entries);
     });
 }
 
@@ -39,12 +24,11 @@ function done(err: Error){
     process.exit(1);
 }
 
-
-function buildHTML(items){
+function buildHTML(items: any){
     const template = "./templates/body.njk";
     const html = nunjucks.render(template, {items: processItems(items)});
 
-    fs.writeFile("index.html", html, (err)=>{
+    fs.writeFile("index.html", html, (err: Error)=>{
         if(err) {
             return console.error("Unable to create index.html!");
         }
@@ -53,12 +37,12 @@ function buildHTML(items){
     });
 }
 
-function processItems(origItems){
+function processItems(origItems: any){
     let episodeCount = origItems.length;
 
-    let processedItems = [];
-    origItems.forEach((item)=>{
-        const newItem = Object.assign({}, item);
+    let processedItems: any = [];
+    origItems.forEach((item :any)=>{
+        const newItem = (<any>Object).assign({}, item);
         const titleInfo = stripEpisodeNumber(item.title);
 
         newItem.title = titleInfo.title;

@@ -8,7 +8,11 @@
       <div class="modal-body" id="tfl-modal-body">
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <a type="button"
+           id="tfl-modal-download-link"
+           class="btn btn-info pull-left"
+           target="_blank" download><i class="glyphicon glyphicon-save"></i>&nbsp;Download Episode</a>
+        <button type="button" class="btn btn-default pull-right" data-dismiss="modal">Close</button>
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
@@ -18,9 +22,11 @@
 function showInfoModal(episodeIndex){
     var title = $("#tfl-item-title-" + episodeIndex).html();
     var description = $("#tfl-item-description-" + episodeIndex).html();
+    var url = $("#tfl-item-download-url-" + episodeIndex).html();
     
     $("#tfl-modal-title").html(title);
     $("#tfl-modal-body").html(description);
+    $("#tfl-modal-download-link").attr("href", url);
 
     $("#tfl-modal").modal("show");
 }

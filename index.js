@@ -1,12 +1,12 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const fs = require("fs");
-const nunjucks = require("nunjucks");
-const rssparser = require("rss-parser");
-const URL = "http://timferriss.libsyn.com/rss";
+exports.__esModule = true;
+var fs = require("fs");
+var nunjucks = require("nunjucks");
+var rssparser = require("rss-parser");
+var URL = "http://timferriss.libsyn.com/rss";
 parseRSS(URL);
 function parseRSS(url) {
-    rssparser.parseURL(url, (err, parsed) => {
+    rssparser.parseURL(url, function (err, parsed) {
         if (err)
             done(err);
         buildHTML(parsed.feed.entries);
@@ -19,9 +19,9 @@ function done(err) {
     process.exit(1);
 }
 function buildHTML(items) {
-    const template = "./templates/body.njk";
-    const html = nunjucks.render(template, { items: processItems(items) });
-    fs.writeFile("index.html", html, (err) => {
+    var template = "./templates/body.njk";
+    var html = nunjucks.render(template, { items: processItems(items) });
+    fs.writeFile("index.html", html, function (err) {
         if (err) {
             return console.error("Unable to create index.html!");
         }
@@ -29,22 +29,25 @@ function buildHTML(items) {
     });
 }
 function processItems(origItems) {
-    let episodeCount = origItems.length;
-    let processedItems = [];
-    origItems.forEach((item) => {
-        const newItem = Object.assign({}, item);
-        const titleInfo = stripEpisodeNumber(item.title);
+    var episodeCount = origItems.length;
+    var processedItems = [];
+    origItems.forEach(function (item) {
+        var newItem = Object.assign({}, item);
+        var titleInfo = stripEpisodeNumber(item.title);
         newItem.title = titleInfo.title;
         newItem.episodeNumber = titleInfo.episodeNumber;
+        newItem.description = newItem.content;
+        newItem.downloadFilename = newItem.episodeNumber + " " + newItem.title + ".mp3";
+        newItem.downloadURL = newItem.enclosure.url;
         processedItems.push(newItem);
         episodeCount--;
     });
     return processedItems;
 }
 function stripEpisodeNumber(title) {
-    let episodeNumber = 0;
-    let episodeTitle = title;
-    let colonIndex = title.indexOf(":");
+    var episodeNumber = 0;
+    var episodeTitle = title;
+    var colonIndex = title.indexOf(":");
     if (colonIndex > -1) {
         episodeTitle = title.substring(colonIndex + 2);
     }
@@ -65,4 +68,3 @@ function stripEpisodeNumber(title) {
     }
     return { title: episodeTitle, episodeNumber: episodeNumber };
 }
-//# sourceMappingURL=index.js.map

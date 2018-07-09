@@ -12,13 +12,17 @@
             {% if (item.episodeNumber > 0) %}
                 {{ item.episodeNumber }}.
             {% endif %}
-            <a href="{{ item.enclosures[0].url }}" download="{{ item.episodeNumber }} {{ item.title }}.mp3">
+            <a  href="{{ item.downloadURL }}" 
+                download="{{ item.downloadFilename }}"
+                target="_blank">
                 <i class="glyphicon glyphicon-save"></i>
             </a>
             <a href="javascript:void(0)" 
                onclick="showInfoModal({{ loop.index }})"
                id="tfl-item-title-{{ loop.index }}">{{ item.title }}</a>
             <div style="display:none;" id="tfl-item-description-{{ loop.index }}">{{ item.description | safe }}</div>
+            <div style="display:none;" id="tfl-item-download-url-{{ loop.index }}">{{ item.downloadURL }}</div>
+            <div style="display:none;" id="tfl-item-download-filename-{{ loop.index }}">{{ item.downloadFilename }}</div>
         </div>
     </div>
 </div>

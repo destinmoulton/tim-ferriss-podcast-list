@@ -34,4 +34,4 @@ $ yarn run generate
 
 ### License
 
-This software is released as open source under the MIT license.
+MIT
